@@ -1,4 +1,5 @@
-var socket = io(); //initiate request from client to server to open a websocket
+//initiate request from client to server to open a websocket
+var socket = io(); 
 
 socket.on('connect', function () {
     console.log('Connected to Server.');

@@ -17,6 +17,20 @@ app.use(express.static(publicPath));
 io.on('connection', (socket) => {
     console.log('New user connected');
 
+    //socket.emit from admin text welcome to the chat app - only to user who joined
+    //socket broadcast, from admin text new user joined - everybody but the user who joined
+    socket.emit('newMessage', {
+        from : 'Admin',
+        text : 'Welcome to the Chat App!',
+        createdAt : new Date().getTime()
+    });
+
+    socket.broadcast.emit('newMessage', {
+        from : 'Admin',
+        text : 'A new user has joined.',
+        createdAt : new Date().getTime()
+    });
+    
     //client to server
     socket.on('createMessage', (message) => {
         console.log('New message received', message);
@@ -27,6 +41,13 @@ io.on('connection', (socket) => {
             text : message.text,
             createdAt : new Date().getTime()
         });
+
+        //sends to everybody but the sender
+        // socket.broadcast.emit('newMessage', {
+        //     from : message.from,
+        //     text : message.text,
+        //     createdAt : new Date().getTime()
+        // });
     });
 
     socket.on('disconnect', () => {

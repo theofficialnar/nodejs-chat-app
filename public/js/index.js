@@ -12,4 +12,18 @@ socket.on('disconnect', function () {
 //listen for events from client - server to client
 socket.on('newMessage', function (message) {
     console.log('New message received', message);
+    var li = $('<li></li>');
+    li.text(`${message.from}: ${message.text}`);
+    $('#messages').append(li);
+});
+
+$('#messageForm').on('submit', function (e) {
+    e.preventDefault();
+
+    socket.emit('createMessage', {
+        from : 'user',
+        text : $('[name=message]').val()
+    }, function () {
+
+    });
 });

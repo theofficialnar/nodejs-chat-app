@@ -25,11 +25,14 @@ io.on('connection', (socket) => {
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'A new user has connected to the chat.'));
 
     //client to server
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message, callback) => {
         console.log('New message received', message);
 
         //emits an event to all connections
         io.emit('newMessage', generateMessage(message.from, message.text));
+
+        //runs callback when data is received
+        callback('This is from the server.');
 
         //sends to everybody but the sender
         // socket.broadcast.emit('newMessage', {

@@ -1,5 +1,5 @@
 //initiate request from client to server to open a websocket
-var socket = io();
+const socket = io();
 
 function scrollToBottom() {
     // selectors

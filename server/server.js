@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const http = require('http');
 const socketIO = require('socket.io');
+const _ = require('lodash');
 
 const {generateMessage, generateLocationMessage} = require('./utils/message');
 const {isRealString} = require('./utils/validation');
@@ -22,20 +23,25 @@ io.on('connection', (socket) => {
     console.log('New user connected');
 
     socket.on('join', (params, callback) => {
-        if (!isRealString(params.name) || !isRealString(params.room)) {
+        let username = _.capitalize(params.name);
+        let roomname = _.lowerCase(params.room);
+
+        if (!isRealString(username) || !isRealString(roomname)) {
             return callback('Name and room name are required');
         }
 
-        socket.join(params.room);
+        socket.join(roomname);
         users.removeUser(socket.id);
-        users.addUser(socket.id, params.name, params.room);
+        users.addUser(socket.id, username, roomname, (err) => {
+            return callback(err);
+        });
 
-        io.to(params.room).emit('updateUserList', users.getUserList(params.room));
+        io.to(roomname).emit('updateUserList', users.getUserList(roomname));
 
         //socket.emit from admin text welcome to the chat app - only to user who joined
         //socket broadcast, from admin text new user joined - everybody but the user who joined
         socket.emit('newMessage', generateMessage('Chatbot', 'Welcome to the chat app.'));
-        socket.broadcast.to(params.room).emit('newMessage', generateMessage('Chatbot', `${params.name} has joined.`));
+        socket.broadcast.to(roomname).emit('newMessage', generateMessage('Chatbot', `${username} has joined.`));
         callback();
     });
 

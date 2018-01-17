@@ -3,7 +3,13 @@ class Users {
         this.users = [];
     }
 
-    addUser (id, name, room) {
+    addUser (id, name, room, callback) {
+        let duplicateName = this.users.filter((user) => user.name === name && user.room === room);
+
+        if (duplicateName.length > 0) {
+            return callback('Username already taken.');
+        }
+
         let user = {id, name, room};
         this.users.push(user);
         return user;
@@ -28,6 +34,7 @@ class Users {
 
         return user;
     }
+
 }
 
 module.exports = {Users};

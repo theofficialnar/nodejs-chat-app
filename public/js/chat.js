@@ -37,7 +37,7 @@ socket.on('disconnect', function () {
 });
 
 socket.on('updateUserList', function (users) {
-    var ol = $('<ol></ol>');
+    let ol = $('<ol></ol>');
     users.forEach(function (user) {
         ol.append($('<li></li>').text(user));
     });
@@ -77,17 +77,16 @@ socket.on('newLocationMessage', function (message) {
 $('#messageForm').on('submit', function (e) {
     e.preventDefault();
 
-    var messageTextbox = $('[name=message]');
+    let messageTextbox = $('[name=message]');
 
     socket.emit('createMessage', {
-        from : 'user',
         text : messageTextbox.val()
     }, function () {
         messageTextbox.val('');
     });
 });
 
-var locationButton = $('#sendLocation');
+let locationButton = $('#sendLocation');
 locationButton.on('click', function () {
     if (!navigator.geolocation) {
         return alert('Geolocation is not supported by your browser');

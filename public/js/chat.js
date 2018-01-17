@@ -33,7 +33,15 @@ socket.on('connect', function () {
 });
 
 socket.on('disconnect', function () {
-    console.log('Disconnected from server.');
+    console.log('A user has disconnected.');
+});
+
+socket.on('updateUserList', function (users) {
+    var ol = $('<ol></ol>');
+    users.forEach(function (user) {
+        ol.append($('<li></li>').text(user));
+    });
+    $('#users').html(ol);
 });
 
 //listen for events from client - server to client

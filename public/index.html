@@ -8,11 +8,46 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body class="centered-form">
+    <div class="chatroom__selection">
+        <div class="form-field">
+            <h3>Welcome to the chat app!</h3>
+        </div>
+        <hr>
+        <div class="form-field">
+            <button class="select-button" id="joinChatTrigger">Join an active room</button>
+            <span>or</span>
+            <button class="select-button" id="createChatTrigger">Create your own!</button>
+        </div>
+    </div>
+
+    <div class="chatroom__active">
+        <form action="/chat.html">
+            <div class="form-field">
+                <h3>Select a room</h3>
+            </div>
+            <hr>
+            <div class="form-field">
+                <label>Display name</label>
+                <input type="text" name="name" autofocus/>
+            </div>
+            <label>Select a room</label>
+            <div class="form-field" id="activeChatSelect">
+            </div>
+            <div class="form-field">
+                <button>Join</button>
+            </div>
+            <div class="form-field">
+                <button id="joinChatBack">Back</button>
+            </div>
+        </form>
+    </div>
+
     <div class="centered-form__form">
         <form action="/chat.html">
             <div class="form-field">
-                <h3>Join a Chat</h3>
+                <h3>Create a room</h3>
             </div>
+            <hr>
             <div class="form-field">
                 <label>Display name</label>
                 <input type="text" name="name" autofocus/>
@@ -22,9 +57,17 @@
                 <input type="text" name="room"/>
             </div>
             <div class="form-field">
-                <button>Join</button>
+                <button>Create</button>
+            </div>
+            <div class="form-field">
+                <button id="createChatBack">Back</button>
             </div>
         </form>
     </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/libs/jquery-3.2.1.min.js"></script>
+    <script src="/js/libs/mustache.js"></script>
+    <script src="/js/index.js"></script></script>
 </body>
 </html> 

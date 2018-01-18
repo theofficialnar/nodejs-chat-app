@@ -72,7 +72,7 @@ socket.on('newLocationMessage', function (message) {
 
     $('#messages').append(html);
     scrollToBottom();
-})
+});
 
 $('#messageForm').on('submit', function (e) {
     e.preventDefault();

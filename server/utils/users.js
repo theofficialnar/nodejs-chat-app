@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 class Users {
     constructor () {
         this.users = [];
@@ -35,6 +37,9 @@ class Users {
         return user;
     }
 
+    activeRooms () {
+        return _.uniq(this.users.map((user) => user.room));
+    }
 }
 
 module.exports = {Users};

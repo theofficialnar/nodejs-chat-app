@@ -21,10 +21,15 @@ app.use(express.static(publicPath));
 //register an event listener called connection
 io.on('connection', (socket) => {
     console.log('New user connected');
-
+    
     socket.on('join', (params, callback) => {
+        setTimeout(() => {
+            io.emit('updateRoomList', users.activeRooms());
+        }, 500);
         let username = _.capitalize(params.name);
         let roomname = _.lowerCase(params.room);
+
+        console.log(`${username} has joined ${roomname}.`);
 
         if (!isRealString(username) || !isRealString(roomname)) {
             return callback('Name and room name are required');
@@ -42,6 +47,7 @@ io.on('connection', (socket) => {
         //socket broadcast, from admin text new user joined - everybody but the user who joined
         socket.emit('newMessage', generateMessage('Chatbot', 'Welcome to the chat app.'));
         socket.broadcast.to(roomname).emit('newMessage', generateMessage('Chatbot', `${username} has joined.`));
+        
         callback();
     });
 
@@ -68,8 +74,13 @@ io.on('connection', (socket) => {
             //remove user on log out
             io.to(removedUser.room).emit('updateUserList', users.getUserList(removedUser.room));
             io.to(removedUser.room).emit('newMessage', generateMessage('Chatbot', `${removedUser.name} has left the chat.`));
+            console.log(`${removedUser.name} has left ${removedUser.room}.`);
+            io.emit('updateRoomList', users.activeRooms());
         }
     });
+
+    io.emit('updateRoomList', users.activeRooms());
+    
 });
 
 server.listen(port, () => {
